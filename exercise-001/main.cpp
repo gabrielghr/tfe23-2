@@ -1,5 +1,6 @@
 #include <fmt/chrono.h>
 #include <fmt/format.h>
+#include <random>
 
 #include "CLI/CLI.hpp"
 #include "config.h"
@@ -40,6 +41,51 @@ auto main(int argc, char **argv) -> int
     //fmt::print("Value of argv[2], {}!\n", argv[2]); //possible nullpointer exception
 
     fmt::print("The value of the counter, {}!\n", counter);
+
+    std::vector<unsigned int> values;
+    fmt::print("Elements in values, {}!\n", values.size());
+    values.push_back(42);
+    values.push_back(4712);
+    values.push_back(11);
+    fmt::print("Elements in values, {}!\n", values.size());
+    for (int i = 0; i < values.size(); i++)
+    {
+        fmt::print("Value of element {} in values: {}\n", i, values[i]);
+    }
+    for (const unsigned int & value : values) //access by const reference
+    {
+        fmt::print("Value of element {}\n", value);
+    }
+    fmt::print("Value of non existing 10 element: {}\n", values[10]);
+    //fmt::print("Value of non existing 10 element with at(): {}\n", values.at(10)); throws an exception
+
+    // Seed with a real random value, if available
+    std::random_device r;
+
+    // Choose a random number between 1 and 100
+    std::default_random_engine el(r());
+    std::uniform_int_distribution<int> uniform_dist(1,100);
+    int rand_value = uniform_dist(el);
+
+    fmt::print("Random number between 1 and 100: {}\n", rand_value);
+
+    std::vector<unsigned int> numbers;
+    for (int i = 0; i < counter; i++)
+    {
+        numbers.push_back(uniform_dist(el));
+    }
+    
+    for (const unsigned int & value : numbers) //range based for loop
+    {
+        // value = 0 not allowed due to const
+        fmt::print("Value of elements {} in numbers\n", value);
+    }
+
+    for (int i = 0; i < numbers.size(); i++)
+    {
+        numbers[i] = 0; // possible to modifiy the underlying vector entries
+        fmt::print("Value of elements {} in numbers {}\n",i , numbers[i]);
+    }
 
     return 0; /* exit gracefully*/
 }
