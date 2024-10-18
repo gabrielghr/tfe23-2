@@ -41,5 +41,5 @@ auto main(int argc, char **argv) -> int
 
     fmt::print("The value of the counter, {}!\n", counter);
 
-    return 42; /* exit gracefully*/
+    return 0; /* exit gracefully*/
 }
